@@ -4,7 +4,7 @@ from pathlib import Path
 import server
 
 def main():
- if not Path(server.DB).exists():
+ if not server.DATABASE_URL and not Path(server.DB).exists():
   raise SystemExit('Avval python setup_admin.py orqali bazani yarating.')
  server.initialize()
  q=server.validate_quiz(json.loads((server.ROOT/'questions.example.json').read_text(encoding='utf-8')))

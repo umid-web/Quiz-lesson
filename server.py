@@ -1,4 +1,4 @@
-"""Python 3.10+; external packages are not required."""
+"""Local SQLite or hosted PostgreSQL selected by DATABASE_URL."""
 import csv, hashlib, hmac, io, json, os, secrets, sqlite3, threading, time
 from pathlib import Path
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -6,31 +6,79 @@ from http.cookies import SimpleCookie
 
 ROOT = Path(__file__).resolve().parent
 DB = os.environ.get('QUIZ_DB', str(ROOT / 'data' / 'quiz.sqlite3'))
+DATABASE_URL = os.environ.get('DATABASE_URL', '').strip()
 LOCK = threading.RLock()
 DURATION = 30
 BANK_SIZE = 50
 TEST_SIZE = 15
 
+class Database:
+    """Small compatibility layer for the application's fixed SQL statements."""
+    def __init__(self, connection, postgres=False):
+        self.raw = connection
+        self.postgres = postgres
+    def execute(self, sql, params=()):
+        if self.postgres:
+            sql = sql.replace('?', '%s')
+        return self.raw.execute(sql, params)
+    def executescript(self, sql):
+        # Schema statements have no semicolons inside strings.
+        for statement in sql.split(';'):
+            if statement.strip():
+                self.execute(statement)
+    def __enter__(self):
+        return self
+    def __exit__(self, kind, value, traceback):
+        try:
+            if kind is None:
+                self.raw.commit()
+            else:
+                self.raw.rollback()
+        finally:
+            self.raw.close()
+
+class Record(dict):
+    def __getitem__(self, key):
+        if isinstance(key, int):
+            return tuple(self.values())[key]
+        return super().__getitem__(key)
+
+def record_factory(cursor):
+    names = [column.name for column in cursor.description] if cursor.description else []
+    return lambda values: Record(zip(names, values))
+
 def connect():
+    if DATABASE_URL:
+        try:
+            import psycopg
+        except ImportError:
+            raise RuntimeError('PostgreSQL uchun: pip install -r requirements.txt') from None
+        return Database(psycopg.connect(DATABASE_URL, row_factory=record_factory,
+                                       connect_timeout=15), postgres=True)
     c = sqlite3.connect(DB, timeout=15)
     c.row_factory = sqlite3.Row
-    return c
+    return Database(c)
 
 def digest(password, salt):
     return hashlib.pbkdf2_hmac('sha256', password.encode(), bytes.fromhex(salt), 250000).hex()
 
 def initialize():
-    Path(DB).parent.mkdir(parents=True, exist_ok=True)
+    if not DATABASE_URL:
+        Path(DB).parent.mkdir(parents=True, exist_ok=True)
     with connect() as c:
-        c.executescript('''
-        PRAGMA journal_mode=WAL;
+        if not DATABASE_URL:
+            c.execute('PRAGMA journal_mode=WAL')
+        schema = '''
         CREATE TABLE IF NOT EXISTS config(key TEXT PRIMARY KEY,value TEXT NOT NULL);
         CREATE TABLE IF NOT EXISTS sessions(token TEXT PRIMARY KEY, expires REAL NOT NULL);
         CREATE TABLE IF NOT EXISTS attempts(id TEXT PRIMARY KEY,token TEXT UNIQUE NOT NULL,name TEXT NOT NULL,
           topic TEXT NOT NULL,questions TEXT NOT NULL,answers TEXT NOT NULL,idx INTEGER NOT NULL,
           deadline REAL NOT NULL,started REAL NOT NULL,finished REAL,events INTEGER NOT NULL DEFAULT 0);
-        ''')
-        if 'subject' not in [row[1] for row in c.execute('PRAGMA table_info(attempts)')]:
+        '''
+        c.executescript(schema.replace(' REAL', ' DOUBLE PRECISION') if DATABASE_URL else schema)
+        if DATABASE_URL:
+            c.execute("ALTER TABLE attempts ADD COLUMN IF NOT EXISTS subject TEXT NOT NULL DEFAULT ''")
+        elif 'subject' not in [row[1] for row in c.execute('PRAGMA table_info(attempts)')]:
             c.execute("ALTER TABLE attempts ADD COLUMN subject TEXT NOT NULL DEFAULT ''")
         if not c.execute("SELECT 1 FROM config WHERE key='admin'").fetchone():
             username = os.environ.get('BOOTSTRAP_ADMIN_USERNAME', 'admin')
@@ -214,6 +262,8 @@ class Handler(BaseHTTPRequestHandler):
         return self.send(404,{'error':'Topilmadi'})
 
 def main():
+    if os.environ.get('RENDER') and not DATABASE_URL:
+        raise SystemExit('Render uchun DATABASE_URL ni Neon ulanish manziliga sozlang.')
     initialize()
     host=os.environ.get('HOST','0.0.0.0');port=int(os.environ.get('PORT','8000'))
     server=ThreadingHTTPServer((host,port),Handler);server.failures={}

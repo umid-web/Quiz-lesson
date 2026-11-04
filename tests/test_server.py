@@ -5,6 +5,7 @@ import server
 class Tests(unittest.TestCase):
  @classmethod
  def setUpClass(cls):
+  server.DATABASE_URL=''
   cls.tmp=tempfile.TemporaryDirectory();server.DB=str(Path(cls.tmp.name)/'test.db')
   os.environ['BOOTSTRAP_ADMIN_PASSWORD']='Testing-only-98765';server.initialize()
   cls.http=server.ThreadingHTTPServer(('127.0.0.1',0),server.Handler);cls.http.failures={}

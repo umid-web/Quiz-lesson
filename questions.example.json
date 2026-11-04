@@ -1,0 +1,556 @@
+{
+  "subject": "Axborot tizimini loyihalashtirish",
+  "title": "Axborot tizimlari loyihasi: loyiha rejasini ishlab chiqish",
+  "questions": [
+    {
+      "id": "LP01",
+      "text": "Buyurtmachi «ombor modulini tezroq ishga tushiring» dedi, ammo muvaffaqiyat mezonlari aniqlanmagan. Loyiha rejasini asoslash uchun birinchi qaysi ish zarur?",
+      "options": [
+        "Biznes maqsadi, chegaralar va o‘lchanadigan qabul mezonlarini kelishish",
+        "Dasturchilarni barcha modullarga teng taqsimlash",
+        "Texnologiyalarni tanlab yakuniy muddatni tasdiqlash",
+        "Batafsil Gantt jadvalini manfaatdor tomonlarsiz tuzish"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP02",
+      "text": "Loyiha nizomi tasdiqlangan. Loyiha rejasida mazmun bazaviy rejasi qaysi to‘plam bilan ifodalanadi?",
+      "options": [
+        "Biznes holati, risk reyestri va xarajatlar hisoboti",
+        "Loyiha mazmuni bayoni, WBS va WBS lug‘ati",
+        "Tarmoq diagrammasi, sprint ro‘yxati va test jurnali",
+        "Shartnoma, shtat jadvali va aloqa protokoli"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP03",
+      "text": "WBS tuzilmasida tahlil 30%, dasturlash 50%, test 20% deb yozilgan, ammo migratsiya va o‘qitish yo‘q. Asosiy kamchilik qaysi?",
+      "options": [
+        "WBS da ishlar majburan xronologik tartibda berilgan",
+        "Har ish paketida aynan bir xil davomiylik belgilanmagan",
+        "WBS barcha zarur natijalarni qamrab olmagan",
+        "Barcha ishlar tashqi yetkazib beruvchiga biriktirilmagan"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP04",
+      "text": "Ikki ish paketi bir xil ma’lumotlar migratsiyasini o‘z ichiga oladi. Bu qanday rejalashtirish xavfini tug‘diradi?",
+      "options": [
+        "Tanqidiy yo‘l avtomatik ravishda yo‘qoladi",
+        "Qabul mezonlari o‘z-o‘zidan bajarilgan hisoblanadi",
+        "Loyiha davomiyligi doimo ikki baravar kamayadi",
+        "Ish va xarajat ikki marta hisoblanishi mumkin"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP05",
+      "text": "Ish paketi «integratsiyani bajarish» deb yozilgan. Uni baholash va nazorat qilish uchun eng zarur aniqlashtirish qaysi?",
+      "options": [
+        "Natija, chegaralar, mas’ul va qabul mezonlarini belgilash",
+        "Faqat bajarish muddati va umumiy ish soatini belgilash",
+        "Faqat umumiy loyiha maqsadi va homiy ismini yozish",
+        "Faqat ish paketining boshqa paketlardan keyin kelishini ko‘rsatish"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP06",
+      "text": "A(4 kun) dan so‘ng B(6) va C(3) parallel boshlanadi. D(2) B va C tugagach boshlanadi. Resurslar yetarli bo‘lsa, loyiha muddati qancha?",
+      "options": [
+        "9 kun",
+        "12 kun",
+        "15 kun",
+        "10 kun"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP07",
+      "text": "A(3) dan keyin B(5) va C(2) bajariladi; D(4) ikkalasini kutadi. C ishining umumiy vaqt zaxirasi qancha?",
+      "options": [
+        "0 kun",
+        "2 kun",
+        "3 kun",
+        "5 kun"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP08",
+      "text": "Oldingi ishning tugashi keyingi ishning boshlanish sharti bo‘lsa, qaysi bog‘liqlik ishlatiladi?",
+      "options": [
+        "Start-to-Start (SS)",
+        "Finish-to-Finish (FF)",
+        "Start-to-Finish (SF)",
+        "Finish-to-Start (FS)"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP09",
+      "text": "Server o‘rnatilishi tugaganidan 2 kun keyin sinov boshlanishi kerak. Jadvalda bu qanday ifodalanadi?",
+      "options": [
+        "FS bog‘liqligi va +2 kun kechikish",
+        "FS bog‘liqligi va −2 kun ilgarilash",
+        "SS bog‘liqligi va nol kechikish",
+        "FF bog‘liqligi va −2 kun ilgarilash"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP10",
+      "text": "Tanqidiy yo‘ldagi ish 3 kun kechikdi. Jadvalda boshqa o‘zgarish yoki zaxira yo‘q. Yakuniy muddatga ta’siri qanday?",
+      "options": [
+        "Loyiha tugashi ta’sirsiz qoladi",
+        "Loyiha tugashi 3 kun kechikadi",
+        "Loyiha tugashi 3 kun tezlashadi",
+        "Faqat shu ishning budjeti o‘zgaradi"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP11",
+      "text": "Parallel ikki ish bir xil yagona DBA mutaxassisini to‘liq band qiladi. Resursni tekislash qanday oqibatga olib kelishi mumkin?",
+      "options": [
+        "Bog‘liqliklar yo‘qolib, muddat albatta qisqaradi",
+        "Har ikki ish bir vaqtda to‘liq resurs bilan bajariladi",
+        "Ishlar ketma-ketlashib, loyiha muddati uzayishi mumkin",
+        "Resurs to‘qnashuvi avtomatik ravishda riskdan chiqariladi"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP12",
+      "text": "Muddatni qisqartirish uchun avval ketma-ket rejalangan tahlil va ishlab chiqish qisman parallel qilindi. Bu qaysi usul?",
+      "options": [
+        "Crashing",
+        "Resursni tekislash",
+        "Pastdan yuqoriga xarajat baholash",
+        "Fast tracking"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP13",
+      "text": "Tanqidiy ishga qo‘shimcha mutaxassis ajratilib muddat qisqartirildi, xarajat oshdi. Bu qanday usul?",
+      "options": [
+        "Crashing",
+        "Fast tracking",
+        "Riskni qabul qilish",
+        "Talablarni kuzatib borish"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP14",
+      "text": "Ish A ni 2 kun qisqartirish 8 mln, ish B ni 1 kun qisqartirish 3 mln turadi. Ikkalasi bitta tanqidiy yo‘lda; loyiha 1 kun qisqartiriladi. Eng arzon tanlov qaysi?",
+      "options": [
+        "A ni 1 kun qisqartirish",
+        "B ni 1 kun qisqartirish",
+        "A va B ni birga qisqartirish",
+        "Tanqidiy bo‘lmagan ishni qisqartirish"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP15",
+      "text": "PERT bo‘yicha optimistik 4, eng ehtimolli 7, pessimistik 16 kun. Kutilgan davomiylik qancha?",
+      "options": [
+        "9 kun",
+        "7 kun",
+        "8 kun",
+        "10 kun"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP16",
+      "text": "PERT da optimistik baho 3, pessimistik baho 15 kun. Standart og‘ish qancha?",
+      "options": [
+        "3 kun",
+        "6 kun",
+        "12 kun",
+        "2 kun"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP17",
+      "text": "Reja ufqi yaqin ishlar uchun batafsil, uzoq ishlar uchun umumiy bo‘lib, keyinchalik aniqlashtiriladi. Bu qanday yondashuv?",
+      "options": [
+        "Bosqichma-bosqich batafsillashtirish (rolling wave)",
+        "Barcha talablarni rejasiz qoldirish",
+        "Faqat retrospektiva asosida budjet tuzish",
+        "Tasdiqlangan reja o‘zgarishini butunlay taqiqlash"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP18",
+      "text": "«API hujjatlari 10-maygacha beriladi» degan taxmin noto‘g‘ri chiqishi mumkin. Rejada eng to‘g‘ri yondashuv qaysi?",
+      "options": [
+        "Uni tasdiqlangan fakt sifatida yashirish",
+        "Taxminni qayd etish, bog‘liqlik va riskni baholash, mas’ul belgilash",
+        "API ishlarini WBS dan chiqarish",
+        "Barcha muddatlarni shu taxmin tekshirilmasdan qat’iy kafolatlash"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP19",
+      "text": "Buyurtmachi yangi autentifikatsiya usulini tasdiqlangan reja ustiga qo‘shmoqchi. Birinchi boshqaruv qadami qaysi?",
+      "options": [
+        "Dasturchiga darhol bajarishni topshirib keyin hujjatlashtirish",
+        "Oldingi bazaviy rejani izsiz almashtirish",
+        "O‘zgarish so‘rovini qayd etib, mazmun, muddat, xarajat va risk ta’sirini tahlil qilish",
+        "Har qanday o‘zgarishni tahlilsiz rad etish"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP20",
+      "text": "Talab test holatlari bilan bog‘lanmagan. Rejaning qaysi vositasi bu uzilishni aniqlashga eng mos?",
+      "options": [
+        "Risklar reyestri va risk ehtimollari matritsasi",
+        "Resurslar taqvimi va bandlik diagrammasi",
+        "Bosqichlar bo‘yicha umumiy xarajatlar egri chizig‘i",
+        "Talablar kuzatuvchanligi matritsasi"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP21",
+      "text": "«Tizim tez ishlashi kerak» talabini rejalashtirish uchun tekshiriladigan mezonga aylantirishning to‘g‘ri shakli qaysi?",
+      "options": [
+        "Kelishilgan yukda so‘rovlarning 95 foizi 2 soniyadan kamda javob qaytarishi",
+        "Interfeysning barcha foydalanuvchilarga yoqishi",
+        "Dasturchilar tizimni yetarlicha tez deb hisoblashi",
+        "Serverga imkon qadar ko‘p xotira o‘rnatilishi"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP22",
+      "text": "RACI jadvalida bir natija bo‘yicha ikki shaxs A deb belgilangan, qarorlari zid. Rejani qanday tuzatish ma’qul?",
+      "options": [
+        "Har bir ishtirokchini A qilib belgilash",
+        "Yakuniy javobgarni bitta qilib, bajaruvchi va maslahatlashuv rollarini ajratish",
+        "A rolini o‘chirib, yakuniy qarorni tasodifga qoldirish",
+        "Faqat C rollarini ko‘paytirib, qaror vakolatini ochiq qoldirish"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP23",
+      "text": "Ta’siri yuqori, lekin kundalik qiziqishi past homiy uchun aloqa rejasi qanday tuziladi?",
+      "options": [
+        "Har bir texnik commitni majburan yuborish",
+        "Butun loyiha davomida aloqani to‘xtatish",
+        "Qisqa qaror va bosqich hisobotlari bilan qoniqishini ta’minlash",
+        "Uni faqat tizim ishdan chiqqanida xabardor qilish"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP24",
+      "text": "Mijoz qabul sinovida mahsulotni rad etmasligi uchun rejalashtirishda qaysi harakat eng muhim?",
+      "options": [
+        "Faqat dizayn ranglarini loyiha oxirida ko‘rsatish",
+        "Testlashni faqat ishlab chiquvchi ixtiyoriga berish",
+        "Qabul sinovini jadvaldan chiqarib tashlash",
+        "Qabul mezonlari va tasdiqlovchi vakolatni oldindan kelishish"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP25",
+      "text": "Risk ehtimoli 0,25, sodir bo‘lsa zarar 80 mln so‘m. Kutilgan pul yo‘qotishi qancha?",
+      "options": [
+        "20 mln so‘m",
+        "80 mln so‘m",
+        "60 mln so‘m",
+        "0,25 mln so‘m"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP26",
+      "text": "Risk uchun ehtimol va ta’sir yozilgan, lekin kuzatuvchi yo‘q. Qaysi ma’lumotni qo‘shish eng zarur?",
+      "options": [
+        "Faqat ehtimol qiymatini yanada aniqroq kasr bilan ifodalash",
+        "Risk egasi, javob chorasi va ishga tushish belgisi",
+        "Faqat barcha risklarni loyiha rahbariga umumiy biriktirish",
+        "Faqat risklar sonini haftalik hisobotga kiritish"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP27",
+      "text": "Tashqi servis uzilib qolishi ehtimolini kamaytirish uchun zaxira provayder bilan ulanish sinovi rejalandi. Bu qaysi strategiya?",
+      "options": [
+        "Riskni kuchaytirish",
+        "Riskni tekshirmasdan qabul qilish",
+        "Riskni kamaytirish",
+        "Butun loyiha maqsadidan voz kechish"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP28",
+      "text": "Oldindan aniqlangan risk yuz bersa ishlatiladigan budjet qaysi turga mos?",
+      "options": [
+        "Foyda marjasi",
+        "Amortizatsiya normasi",
+        "Bajarilgan ishning qiymati (EV)",
+        "Aniqlangan risklar uchun zaxira (contingency reserve)"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP29",
+      "text": "EV = 60 mln, AC = 75 mln. Xarajat samaradorligi indeksi CPI qancha va nimani bildiradi?",
+      "options": [
+        "0,80; sarflangan pulga nisbatan bajarilgan ish qiymati past",
+        "1,25; xarajat samaradorligi rejalashtirilganidan past",
+        "0,80; jadval 20 foiz oldinda",
+        "1,25; xarajatlar aynan reja bo‘yicha"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP30",
+      "text": "EV = 72 mln, PV = 90 mln. Jadval samaradorligi indeksi SPI qanday?",
+      "options": [
+        "1,25; bajarilgan ish rejalashtirilgan hajmdan orqada",
+        "0,80; bajarilgan ish rejalashtirilgan hajmdan orqada",
+        "0,80; haqiqiy xarajat budjetdan 20 foiz past",
+        "1,25; haqiqiy xarajat budjet bilan teng"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP31",
+      "text": "BAC = 200 mln, joriy CPI = 0,80 va shu samaradorlik davom etadi. EAC = BAC/CPI bo‘yicha yakuniy xarajat bahosi qancha?",
+      "options": [
+        "160 mln so‘m",
+        "200 mln so‘m",
+        "250 mln so‘m",
+        "240 mln so‘m"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP32",
+      "text": "Jamoa ishlarning 80 foizi tugaganini aytmoqda, ammo tayyor natijalar tekshirilmagan. Progressni ishonchli baholash uchun qaysi yo‘l afzal?",
+      "options": [
+        "Faqat sarflangan ish soatini yakuniy natija deb olish",
+        "Faqat ishlab chiqilgan kod qatorlari o‘sishiga qarab foiz belgilash",
+        "Faqat jamoaning o‘rtacha subyektiv bahosini qabul qilish",
+        "Kelishilgan tugallanish mezonlari bo‘yicha tasdiqlangan natijalarni o‘lchash"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP33",
+      "text": "Ma’lumotlar migratsiyasini yakuniy haftaga qoldirish asosiy rejada qanday xavf tug‘diradi?",
+      "options": [
+        "Ma’lumot sifati va moslashtirish muammolari kech aniqlanadi",
+        "Talablarni kuzatib borish avtomatik yaxshilanadi",
+        "Foydalanuvchi qabul sinovi har doim qisqaradi",
+        "Zaxira nusxa olishga ehtiyoj butunlay qolmaydi"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP34",
+      "text": "Tizimni ishga tushirish rejasida rollback mezoni nimani belgilashi kerak?",
+      "options": [
+        "Faqat qaytishga ruxsat beradigan xodimlar ro‘yxatini tuzishni",
+        "Qaysi holatda, kimning qarori bilan va qanday qilib oldingi holatga qaytilishini",
+        "Faqat oldingi dastur versiyasi raqamini qayd etishni",
+        "Faqat eng so‘nggi zaxira nusxa fayli nomini yozishni"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP35",
+      "text": "Integratsiya talablari noaniq, lekin loyiha yakuniy narxini qat’iy belgilash so‘ralmoqda. Eng asosli reja qadami qaysi?",
+      "options": [
+        "Noaniqlikni hisobga olmasdan eng past narxni kafolatlash",
+        "Integratsiyani hisobotlarda yashirish",
+        "Qisqa tadqiqot/prototip bosqichi bilan noaniqlikni kamaytirib, bahoni aniqlashtirish",
+        "Barcha sinovlarni tizim ishga tushganidan keyin boshlash"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP36",
+      "text": "Talablar barqaror, lekin tashqi integratsiyada tajriba yo‘q. Gibrid rejaning asosli varianti qaysi?",
+      "options": [
+        "Barcha bog‘liqliklarni tarmoq diagrammasidan olib tashlash",
+        "Faqat loyiha oxirida bir martalik integratsiya sinovini qilish",
+        "Prototip natijalaridan qat’i nazar dastlabki taxminlarni o‘zgartirmaslik",
+        "Umumiy bosqichlarni rejalab, xavfli integratsiyani iterativ prototiplash"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP37",
+      "text": "Yetkazib beruvchi litsenziyani 4 haftada yetkazadi, o‘rnatish 2 kun. Jadvalda eng muhim qaysi bog‘liqlik aks etishi kerak?",
+      "options": [
+        "Xarid va yetkazish muddati bilan o‘rnatish boshlanishining bog‘liqligi",
+        "Xarid tasdiqlanishini o‘rnatish tugaganidan keyinga bog‘lash",
+        "Yetkazish muddatini texnik ish bo‘lmagani uchun jadvaldan chiqarish",
+        "Yetkazish muddati va o‘rnatishni bog‘liqliksiz parallel ko‘rsatish"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP38",
+      "text": "Tashqi yetkazib beruvchi komponentining qabul shartlari noaniq. Xarid rejasiga nima kiritish lozim?",
+      "options": [
+        "Faqat narx va to‘lov sanasini belgilab, natijani keyin kelishish",
+        "O‘lchanadigan yetkazib berish natijalari, qabul mezonlari va muddatlar",
+        "Faqat texnologiyalar nomini belgilab, sifatni yetkazib beruvchiga qoldirish",
+        "Yetkazilgan hajmni tekshirmasdan to‘lovni qabul deb hisoblash"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP39",
+      "text": "Rejada testlash faqat tizim oxirida bitta ish deb yozilgan. Sifat xavfini kamaytirish uchun eng to‘g‘ri tuzatish qaysi?",
+      "options": [
+        "Barcha testlarni dizayn tasdiqlanishidan oldin tugallangan deb belgilash",
+        "Testchilarni faqat foydalanuvchi shikoyati kelganda jalb qilish",
+        "Modul, integratsion va qabul sinovlarini mos bosqichlarga, resurs va mezonlarga bog‘lash",
+        "Testlash xarajatini budjetdan chiqarish"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP40",
+      "text": "Xavfsizlik tekshiruvlari ishlab chiqish rejasiga kiritilmagan. Eng ma’qul tuzatish qaysi?",
+      "options": [
+        "Parol maydonini yashirishni yagona xavfsizlik mezoni qilish",
+        "Xavfsizlikni faqat tizim ommaga chiqqanidan keyin ko‘rib chiqish",
+        "Risk reyestrida xavfsizlik so‘zini yozish bilan cheklanish",
+        "Xavfsizlik talablarini, tekshiruvlarni va tuzatish vaqtini tegishli bosqichlarga kiritish"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP41",
+      "text": "Rejada butun budjet faqat dasturchilar maoshidan iborat. Axborot tizimi loyihasi uchun qaysi xarajatlar ham ko‘rib chiqilishi kerak?",
+      "options": [
+        "Infratuzilma, litsenziya, migratsiya, test, o‘qitish va zaxiralar",
+        "Faqat dasturchilar maoshiga loyiha rahbari maoshini qo‘shish",
+        "Faqat litsenziyalarni kiritib, migratsiyani operatsion faoliyatga qoldirish",
+        "Faqat uskunalarni kiritib, sinov va o‘qitishni budjetdan tashqari qoldirish"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP42",
+      "text": "Ikki kunlik ishni bajaruvchi mutaxassis faqat kuniga 50% vaqt ajrata oladi. Ish hajmi 16 soat, ish kuni 8 soat. Resursga mos davomiylik qancha?",
+      "options": [
+        "1 ish kuni",
+        "4 ish kuni",
+        "2 ish kuni",
+        "8 ish kuni"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP43",
+      "text": "Tanqidiy bo‘lmagan ishning vaqt zaxirasi 4 kun, kechikishi 3 kun. Boshqa shartlar o‘zgarmasa, loyiha tugashiga ta’sir qanday?",
+      "options": [
+        "Yakuniy muddat 3 kun kechikadi, zaxira 4 kun qoladi",
+        "Yakuniy muddat 1 kun tezlashadi",
+        "Yakuniy muddat o‘zgarmaydi, ishning zaxirasi 1 kun qoladi",
+        "Ish avtomatik ravishda 3 kunlik tanqidiy yo‘lga aylanadi"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP44",
+      "text": "Ikki parallel yo‘lning davomiyligi ham 12 kun. Birinchi yo‘lni 2 kun qisqartirish loyihaga qanday ta’sir qiladi?",
+      "options": [
+        "Loyiha albatta 10 kunda tugaydi",
+        "Loyiha 14 kungacha uzayadi",
+        "Ikkala yo‘lning davomiyligi avtomatik 10 kunga tushadi",
+        "Ikkinchi yo‘l o‘zgarmasa, loyiha 12 kunligicha qoladi"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP45",
+      "text": "«Texnik loyiha tasdiqlandi» bosqich nuqtasi (milestone) odatda jadvalda qanday ifodalanadi?",
+      "options": [
+        "Nol davomiylikdagi muhim hodisa sifatida",
+        "Majburan bir haftalik ishlab chiqish vazifasi sifatida",
+        "Faqat budjet foizi sifatida",
+        "Hech qanday qabul qarorisiz davom etadigan jarayon sifatida"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP46",
+      "text": "Boshlang‘ich talablar tasdiqlangan, ammo reja bazaviy holati saqlanmagan. Nazoratdagi asosiy muammo nima?",
+      "options": [
+        "Barcha risklar avtomatik ravishda yopiladi",
+        "Haqiqiy holatni kelishilgan dastlabki reja bilan taqqoslash qiyinlashadi",
+        "Har qanday o‘zgarish o‘z-o‘zidan tasdiqlanadi",
+        "Reja davomiyligi doimo o‘zgarmay qoladi"
+      ],
+      "correct": 1
+    },
+    {
+      "id": "LP47",
+      "text": "Rejalashtirishda asosiy foydalanuvchilar faqat tizim tayyor bo‘lgach jalb qilinadi. Eng katta xavf qaysi?",
+      "options": [
+        "Barcha ish paketlarining o‘z-o‘zidan soddalashishi",
+        "Talablar tasdiqlanishiga ehtiyoj qolmasligi",
+        "Ish jarayoni va qabul ehtiyojlariga mos kelmaslik kech aniqlanishi",
+        "Migratsiya xarajatining majburan nolga tushishi"
+      ],
+      "correct": 2
+    },
+    {
+      "id": "LP48",
+      "text": "Ishga tushirish muvaffaqiyatli bo‘ldi, lekin qo‘llab-quvvatlash mas’uli yo‘q. Loyiha rejasida qaysi natija yetishmayapti?",
+      "options": [
+        "Faqat serverni qabul qilganlik dalolatnomasini rasmiylashtirish",
+        "Faqat ishlab chiqish tugaganligini ichki xatda e’lon qilish",
+        "Faqat yakuniy xarajat hisobotini texnik guruhga yuborish",
+        "Ekspluatatsiyaga topshirish, hujjatlar va xizmat ko‘rsatish mas’uliyatlarini kelishish"
+      ],
+      "correct": 3
+    },
+    {
+      "id": "LP49",
+      "text": "Barcha vazifalarga bir xil 20% zaxira qo‘shilib, risklar alohida baholanmagan. Eng asosli yaxshilash qaysi?",
+      "options": [
+        "Noaniqlik va risklarni tahlil qilib, zaxiralarni asoslangan tarzda ajratish",
+        "Barcha zaxiralarni yashirin ravishda ikki baravar qilish",
+        "Risklar turidan qat’i nazar barcha zaxiralarni nol qilish",
+        "Zaxirani bajarilgan ish qiymati deb hisobotga kiritish"
+      ],
+      "correct": 0
+    },
+    {
+      "id": "LP50",
+      "text": "Loyiha rejasini yakuniy tasdiqlashdan oldin eng mazmunli izchillik tekshiruvi qaysi?",
+      "options": [
+        "Faqat jadval va budjet summalari alohida tasdiqlanganini tekshirish",
+        "Talablar, WBS, jadval, resurs, budjet, risk va qabul mezonlari o‘zaro mosligini tekshirish",
+        "Faqat barcha ishlar bo‘yicha boshlanish sanasi borligini tekshirish",
+        "Faqat homiyning og‘zaki roziligi mavjudligini tekshirish"
+      ],
+      "correct": 1
+    }
+  ]
+}

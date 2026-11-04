@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Online Quiz</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,sans-serif;background:linear-gradient(135deg,#1e3a8a,#6d28d9);min-height:100vh;color:#0f172a;-webkit-user-select:none;user-select:none}
+input,textarea,select{-webkit-user-select:text;user-select:text}
+#app{max-width:980px;margin:0 auto;padding:16px}
+.card{background:#fff;border-radius:18px;padding:24px;margin:16px auto;box-shadow:0 10px 40px #0004;max-width:560px}
+.wide{max-width:none}
+h1,h2{margin:0 0 14px}
+input,select,textarea{width:100%;padding:12px;margin:6px 0;border:1px solid #cbd5e1;border-radius:10px;font:inherit}
+button{background:#4f46e5;color:#fff;border:0;border-radius:10px;padding:12px 18px;font:inherit;cursor:pointer;margin:4px 0}
+button:hover{background:#4338ca}button:disabled{opacity:.5}
+button.opt{display:block;width:100%;text-align:left;background:#f1f5f9;color:#0f172a;border:2px solid #e2e8f0;margin:8px 0}
+button.opt:hover{background:#e0e7ff;border-color:#6366f1}
+button.sec{background:#e2e8f0;color:#0f172a}button.del{background:#dc2626}
+.err{color:#dc2626;min-height:20px}.ok{color:#16a34a}
+.bar{height:8px;background:#e2e8f0;border-radius:8px;overflow:hidden}.bar i{display:block;height:100%;background:#4f46e5;transition:width .25s linear}
+.top{display:flex;justify-content:space-between;font-weight:600;margin-bottom:8px}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px}.nav button{background:#fff;color:#1e3a8a}.nav button.on{background:#4f46e5;color:#fff}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.stat{background:#eef2ff;border-radius:12px;padding:14px}.stat b{display:block;font-size:26px}
+.tw{overflow-x:auto}table{width:100%;border-collapse:collapse}th,td{padding:8px;border-bottom:1px solid #e2e8f0;text-align:left;white-space:nowrap}
+.hist{display:flex;align-items:flex-end;gap:4px;height:120px;margin-top:10px}.hist div{flex:1;background:#6366f1;border-radius:4px 4px 0 0;min-height:2px;position:relative}
+.hist span{position:absolute;bottom:-18px;left:0;right:0;text-align:center;font-size:10px;color:#475569}
+.big{font-size:56px;font-weight:800;text-align:center;color:#4f46e5}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script src="config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script>
+const sb = supabase.createClient(SB_URL, SB_KEY);
+const A = document.getElementById('app');
+const g = id => document.getElementById(id);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const ls = {
+  get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } },
+  set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} },
+};
+let timer = null, chan = null, inQuiz = false;
+
+// --- Himoya: nusxalash, o'ng tugma, klaviatura, sahifadan chiqish ---
+document.addEventListener('contextmenu', e => { if (inQuiz) e.preventDefault(); });
+document.addEventListener('copy', e => { if (inQuiz) e.preventDefault(); });
+document.addEventListener('keydown', e => {
+  if (!inQuiz) return;
+  const k = e.key.toLowerCase();
+  if (e.key === 'F12' || e.key === 'PrintScreen' || ((e.ctrlKey || e.metaKey) && ['c','u','s','p','a'].includes(k)) || (e.ctrlKey && e.shiftKey && ['i','j','c'].includes(k))) e.preventDefault();
+});
+document.addEventListener('visibilitychange', () => {
+  if (inQuiz && document.hidden) alert('Diqqat! Test paytida boshqa oynaga o\'tmang.');
+});
+
+function go(h) { if (location.hash === '#' + h) route(); else location.hash = h; }
+async function route() {
+  clearInterval(timer);
+  if (chan) { sb.removeChannel(chan); chan = null; }
+  inQuiz = false;
+  const h = location.hash.slice(1) || '/login';
+  try {
+    if (h === '/login') return login();
+    if (h === '/quiz') return quiz();
+    if (h === '/result') return result();
+    if (h === '/admin/login') return adminLogin();
+    if (h.startsWith('/admin/')) return admin(h.split('/')[2]);
+    go('/login');
+  } catch (e) { A.innerHTML = '<div class="card"><p class="err">Xatolik: ' + esc(e.message) + '</p></div>'; }
+}
+addEventListener('hashchange', route);
+route();
+
+// --- Talaba: kirish ---
+function login() {
+  if (ls.get('aid')) return go('/quiz');
+  A.innerHTML = `<div class="card"><h1>📝 Online Quiz</h1>
+  <p>15 ta savol • har biriga 30 soniya • ortga qaytish yo'q</p>
+  <input id="f" placeholder="Ism" maxlength="40"><input id="l" placeholder="Familiya" maxlength="40">
+  <button id="b">Testni boshlash</button><p id="m" class="err"></p>
+  <a href="#/admin/login" style="font-size:12px;color:#64748b">Admin</a></div>`;
+  g('b').onclick = async () => {
+    const f = g('f').value.trim(), l = g('l').value.trim();
+    if (f.length < 2 || l.length < 2) { g('m').textContent = 'Ism va familiyani to\'liq kiriting'; return; }
+    g('b').disabled = true;
+    const { data, error } = await sb.rpc('start_attempt', { f, l });
+    if (error) {
+      g('b').disabled = false;
+      const m = error.message || '';
+      g('m').textContent = m.includes('already') ? 'Siz bu testni allaqachon boshlagansiz.' : m.includes('noquestions') ? 'Savollar hali qo\'shilmagan.' : 'Xatolik: ' + m;
+      return;
+    }
+    ls.set('aid', data.id);
+    try { document.documentElement.requestFullscreen(); } catch (e) {}
+    go('/quiz');
+  };
+}
+
+// --- Talaba: test ---
+async function quiz() {
+  const aid = ls.get('aid');
+  if (!aid) return go('/login');
+  inQuiz = true;
+  const { data, error } = await sb.rpc('get_question', { aid });
+  if (error) { ls.set('aid', ''); A.innerHTML = '<div class="card"><p class="err">Xatolik: ' + esc(error.message) + '</p><button onclick="location.hash=\'/login\'">Orqaga</button></div>'; return; }
+  draw(data, aid);
+}
+function draw(d, aid) {
+  clearInterval(timer);
+  if (d.done) { inQuiz = false; return go('/result'); }
+  const end = Date.now() + d.left * 1000;
+  A.innerHTML = `<div class="card"><div class="top"><span>Savol ${d.idx + 1}/${d.total}</span><span id="t">${Math.ceil(d.left)}s</span></div>
+  <div class="bar"><i id="p" style="width:100%"></i></div>
+  <h2 style="margin-top:18px">${esc(d.text)}</h2>
+  ${['a','b','c','d'].map(k => `<button class="opt" data-k="${k}"><b>${k.toUpperCase()}.</b> ${esc(d[k])}</button>`).join('')}</div>`;
+  const tick = () => {
+    const s = Math.max(0, (end - Date.now()) / 1000);
+    g('t').textContent = Math.ceil(s) + 's';
+    g('p').style.width = (s / 30 * 100) + '%';
+    if (s <= 0) { clearInterval(timer); next(null); }
+  };
+  timer = setInterval(tick, 250);
+  let busy = false;
+  async function next(choice) {
+    if (busy) return; busy = true; clearInterval(timer);
+    document.querySelectorAll('.opt').forEach(b => b.disabled = true);
+    const r = choice
+      ? await sb.rpc('answer_q', { aid, i: d.idx, c: choice })
+      : await sb.rpc('get_question', { aid });
+    if (r.error) { A.innerHTML = '<div class="card"><p class="err">Aloqa xatosi. Sahifani yangilang.</p></div>'; return; }
+    draw(r.data, aid);
+  }
+  document.querySelectorAll('.opt').forEach(b => b.onclick = () => next(b.dataset.k.toUpperCase()));
+}
+
+// --- Talaba: natija ---
+async function result() {
+  const aid = ls.get('aid');
+  if (!aid) return go('/login');
+  const { data, error } = await sb.rpc('get_question', { aid });
+  if (error) { A.innerHTML = '<div class="card"><p class="err">' + esc(error.message) + '</p></div>'; return; }
+  if (!data.done) return go('/quiz');
+  try { if (document.fullscreenElement) document.exitFullscreen(); } catch (e) {}
+  A.innerHTML = `<div class="card"><h1>Test yakunlandi 🎉</h1><div class="big">${data.score}/${data.total}</div><p style="text-align:center">Natijangiz saqlandi.</p></div>`;
+}
+
+// --- Admin ---
+function adminLogin() {
+  A.innerHTML = `<div class="card"><h1>Admin kirish</h1><input id="e" type="email" placeholder="Email"><input id="p" type="password" placeholder="Parol">
+  <button id="b">Kirish</button><p id="m" class="err"></p></div>`;
+  g('b').onclick = async () => {
+    const { error } = await sb.auth.signInWithPassword({ email: g('e').value.trim(), password: g('p').value });
+    if (error) { g('m').textContent = 'Login yoki parol xato'; return; }
+    const { data } = await sb.rpc('is_admin');
+    if (!data) { await sb.auth.signOut(); g('m').textContent = 'Siz admin emassiz'; return; }
+    go('/admin/dashboard');
+  };
+}
+const fmt = s => { s = Math.max(0, Math.round(s)); return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0'); };
+const spent = r => (new Date(r.finished_at) - new Date(r.started_at)) / 1000;
+let rows = [];
+
+async function admin(tab) {
+  const { data: s } = await sb.auth.getSession();
+  if (!s.session) return go('/admin/login');
+  const { data: ok } = await sb.rpc('is_admin');
+  if (!ok) return go('/admin/login');
+  if (!['dashboard', 'results', 'questions'].includes(tab)) tab = 'dashboard';
+  const load = async () => {
+    const { data, error } = await sb.from('attempts').select('*').order('started_at', { ascending: false });
+    if (error) throw error;
+    rows = data;
+  };
+  await load();
+  A.innerHTML = `<div class="nav">
+    ${['dashboard','results','questions'].map(t => `<button class="${t === tab ? 'on' : ''}" onclick="location.hash='/admin/${t}'">${{dashboard:'Statistika',results:'Natijalar',questions:'Savollar'}[t]}</button>`).join('')}
+    <button class="sec" id="out">Chiqish</button></div><div id="v"></div>`;
+  g('out').onclick = async () => { await sb.auth.signOut(); go('/admin/login'); };
+  if (tab === 'questions') return questionsView();
+  const view = tab === 'dashboard' ? dash : resultsView;
+  view();
+  chan = sb.channel('att').on('postgres_changes', { event: '*', schema: 'public', table: 'attempts' }, async () => {
+    try { await load(); view(); } catch (e) {}
+  }).subscribe();
+}
+function dash() {
+  const fin = rows.filter(r => r.finished_at);
+  const max = fin.length ? Math.max(...fin.map(r => r.score)) : 0;
+  const avg = fin.length ? (fin.reduce((a, r) => a + r.score, 0) / fin.length).toFixed(1) : '0';
+  const bins = Array(16).fill(0); fin.forEach(r => { if (r.score >= 0 && r.score <= 15) bins[r.score]++; });
+  const mx = Math.max(1, ...bins);
+  g('v').innerHTML = `<div class="card wide"><h2>Umumiy statistika</h2><div class="stats">
+    <div class="stat">Qatnashchilar<b>${rows.length}</b></div><div class="stat">Tugatganlar<b>${fin.length}</b></div>
+    <div class="stat">Eng yuqori<b>${max}</b></div><div class="stat">O'rtacha ball<b>${avg}</b></div></div>
+    <h3 style="margin-top:20px">Ballar taqsimoti</h3><div class="hist" style="margin-bottom:24px">${bins.map((n, i) => `<div style="height:${n / mx * 100}%" title="${n} ta"><span>${i}</span></div>`).join('')}</div></div>`;
+}
+let q = '', sort = 'score';
+function resultsView() {
+  if (!g('tb')) {
+    g('v').innerHTML = `<div class="card wide"><h2>Natijalar</h2>
+    <input id="q" placeholder="Ism bo'yicha qidirish" value="${esc(q)}">
+    <select id="s"><option value="score">Ball bo'yicha (yuqoridan)</option><option value="name">Ism bo'yicha</option><option value="time">Vaqt bo'yicha (tez)</option><option value="date">Topshirilgan vaqt</option></select>
+    <button id="x">Excel yuklab olish</button><div class="tw"><table><thead><tr><th>№</th><th>Ism-familiya</th><th>To'g'ri</th><th>Noto'g'ri</th><th>Natija</th><th>Sarflangan</th><th>Topshirilgan</th><th></th></tr></thead><tbody id="tb"></tbody></table></div></div>`;
+    g('s').value = sort;
+    g('q').oninput = e => { q = e.target.value; fill(); };
+    g('s').onchange = e => { sort = e.target.value; fill(); };
+    g('x').onclick = exportXls;
+  }
+  fill();
+}
+function list() {
+  let r = rows.filter(x => (x.first_name + ' ' + x.last_name).toLowerCase().includes(q.toLowerCase()));
+  const fin = x => x.finished_at ? 0 : 1;
+  r.sort((a, b) => sort === 'name' ? (a.last_name + a.first_name).localeCompare(b.last_name + b.first_name)
+    : sort === 'time' ? fin(a) - fin(b) || spent(a) - spent(b)
+    : sort === 'date' ? new Date(b.started_at) - new Date(a.started_at)
+    : b.score - a.score);
+  return r;
+}
+function fill() {
+  g('tb').innerHTML = list().map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.last_name)} ${esc(r.first_name)}</td><td>${r.finished_at ? r.score : '-'}</td><td>${r.finished_at ? r.wrong : '-'}</td>
+  <td>${r.finished_at ? r.score + '/15' : 'Jarayonda'}</td><td>${r.finished_at ? fmt(spent(r)) : '-'}</td><td>${new Date(r.started_at).toLocaleString()}</td>
+  <td><button class="del" data-id="${r.id}">O'chirish</button></td></tr>`).join('');
+  document.querySelectorAll('.del').forEach(b => b.onclick = async () => {
+    if (!confirm('Natija o\'chirilsin? (talaba qayta topshira oladi)')) return;
+    const { error } = await sb.from('attempts').delete().eq('id', b.dataset.id);
+    if (error) return alert(error.message);
+    rows = rows.filter(r => r.id !== b.dataset.id); fill();
+  });
+}
+function exportXls() {
+  const t = '<meta charset="utf-8"><table border="1"><tr><th>№</th><th>Ism-familiya</th><th>To\'g\'ri</th><th>Noto\'g\'ri</th><th>Sarflangan</th><th>Topshirilgan</th></tr>' +
+    list().map((r, i) => `<tr><td>${i + 1}</td><td>${esc(r.last_name)} ${esc(r.first_name)}</td><td>${r.score}</td><td>${r.wrong}</td><td>${r.finished_at ? fmt(spent(r)) : ''}</td><td>${new Date(r.started_at).toLocaleString()}</td></tr>`).join('') + '</table>';
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([t], { type: 'application/vnd.ms-excel' }));
+  a.download = 'natijalar.xls'; a.click();
+}
+async function questionsView() {
+  const { data, error } = await sb.from('questions').select('*').order('id');
+  if (error) return alert(error.message);
+  let edit = null;
+  const render = () => {
+    const e = edit || { text: '', a: '', b: '', c: '', d: '', correct: 'A' };
+    g('v').innerHTML = `<div class="card wide"><h2>Savollar (${data.length})</h2>
+    <textarea id="qt" rows="2" placeholder="Savol matni">${esc(e.text)}</textarea>
+    ${['a','b','c','d'].map(k => `<input id="o${k}" placeholder="Variant ${k.toUpperCase()}" value="${esc(e[k])}">`).join('')}
+    <select id="qc">${['A','B','C','D'].map(k => `<option ${e.correct === k ? 'selected' : ''}>${k}</option>`).join('')}</select>
+    <button id="sv">${edit ? 'Saqlash' : 'Qo\'shish'}</button> ${edit ? '<button class="sec" id="cn">Bekor</button>' : ''}<p id="m" class="err"></p>
+    <div class="tw"><table>${data.map((x, i) => `<tr><td>${i + 1}</td><td style="white-space:normal">${esc(x.text)}</td><td>${x.correct}</td><td><button class="sec" data-e="${x.id}">Tahrir</button> <button class="del" data-d="${x.id}">O'chirish</button></td></tr>`).join('')}</table></div></div>`;
+    g('sv').onclick = async () => {
+      const row = { text: g('qt').value.trim(), a: g('oa').value.trim(), b: g('ob').value.trim(), c: g('oc').value.trim(), d: g('od').value.trim(), correct: g('qc').value };
+      if (!row.text || !row.a || !row.b || !row.c || !row.d) { g('m').textContent = 'Barcha maydonlarni to\'ldiring'; return; }
+      const r = edit ? await sb.from('questions').update(row).eq('id', edit.id) : await sb.from('questions').insert(row);
+      if (r.error) { g('m').textContent = r.error.message; return; }
+      questionsView();
+    };
+    if (edit) g('cn').onclick = () => { edit = null; render(); };
+    document.querySelectorAll('[data-e]').forEach(b => b.onclick = () => { edit = data.find(x => String(x.id) === b.dataset.e); render(); scrollTo(0, 0); });
+    document.querySelectorAll('[data-d]').forEach(b => b.onclick = async () => {
+      if (!confirm('Savol o\'chirilsinmi?')) return;
+      const r = await sb.from('questions').delete().eq('id', b.dataset.d);
+      if (r.error) return alert(r.error.message);
+      questionsView();
+    });
+  };
+  render();
+}
+</script>
+</body>
+</html>
